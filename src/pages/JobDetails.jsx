@@ -1,39 +1,40 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { FaBriefcase } from "react-icons/fa";
 
-const jobs = [
-  { id: 1, title: "Frontend Developer", type: "Remote", description: "Build modern UI components using React & Tailwind." },
-  { id: 2, title: "Backend Engineer", type: "On-Site", description: "Develop scalable APIs with Node.js & Express." },
-  { id: 3, title: "UI/UX Designer", type: "Remote", description: "Create intuitive designs using Figma & Adobe XD." },
-  { id: 4, title: "Data Analyst", type: "On-Site", description: "Analyze business data using Python & SQL." },
-  { id: 5, title: "Cybersecurity Expert", type: "Remote", description: "Ensure data security and prevent breaches." },
-  { id: 6, title: "DevOps Engineer", type: "Remote", description: "Manage CI/CD pipelines and cloud infrastructure." },
-  { id: 7, title: "Product Manager", type: "On-Site", description: "Lead product development and roadmaps." },
-  { id: 8, title: "Mobile App Developer", type: "Remote", description: "Develop cross-platform apps with Flutter." },
-  { id: 9, title: "AI Engineer", type: "On-Site", description: "Build machine learning models for automation." },
-  { id: 10, title: "Marketing Specialist", type: "Remote", description: "Plan and execute digital marketing strategies." },
-];
+const JobDetails = () => {
+  const { id } = useParams(); // Get job ID from URL
+  const location = useLocation();
+  const navigate = useNavigate();
 
-const JobDetail = () => {
-  const { id } = useParams();
-  const job = jobs.find((job) => job.id === parseInt(id));
+  // Use the state from navigation or fetch data based on ID
+  const job = location.state;
 
   if (!job) {
-    return <h2 className="text-center text-red-500 font-bold text-2xl">Job not found</h2>;
+    return <p className="text-center text-red-500 text-lg">Job not found!</p>;
   }
 
   return (
-    <section className="py-16 px-6 max-w-3xl mx-auto">
-      <div className="bg-white shadow-lg rounded-lg p-6 text-center">
-        <FaBriefcase className="text-5xl text-blue-500 mx-auto mb-4" />
-        <h2 className="text-3xl font-bold text-gray-800">{job.title}</h2>
-        <span className={`inline-block mt-2 px-4 py-1 rounded-full text-white text-lg ${job.type === "Remote" ? "bg-green-500" : "bg-red-500"}`}>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 px-6">
+      <div className="bg-white shadow-md rounded-lg p-8 max-w-2xl w-full">
+        <FaBriefcase className="text-6xl text-blue-500 mx-auto mb-6" />
+        <h1 className="text-3xl font-bold text-gray-800">{job.title}</h1>
+        <p className="text-gray-600 mt-2">{job.location}</p>
+        <span className={`mt-2 px-3 py-1 rounded-full text-white text-sm ${
+          job.type === "Full-time" ? "bg-green-500" : "bg-orange-500"
+        }`}>
           {job.type}
         </span>
-        <p className="text-gray-600 mt-4 text-lg">{job.description}</p>
+        <p className="text-gray-600 mt-4">{job.description}</p>
+
+        <button
+          onClick={() => navigate(-1)}
+          className="mt-6 px-6 py-2 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600 transition-all"
+        >
+          Back to Jobs
+        </button>
       </div>
-    </section>
+    </div>
   );
 };
 
-export default JobDetail;
+export default JobDetails;

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import JobCarousel from "../components/JobCarousel";
 import Relationships from "../components/Relationships";
 
-
 const Home = () => {
   return (
     <div className="container mx-auto px-6 py-12">
@@ -18,7 +17,7 @@ const Home = () => {
           </h2>
           <div className="mt-6 flex space-x-4">
             <Link
-              to="/jobs"
+              to="browse-jobs"
               className="relative text-white text-lg sm:text-xl font-semibold px-6 sm:px-8 py-3 rounded-md shadow-md 
               bg-blue-500 overflow-hidden transition-all duration-500 before:absolute before:inset-0 
               before:bg-blue-600 before:scale-x-0 before:origin-left hover:before:scale-x-100 
@@ -37,20 +36,22 @@ const Home = () => {
             </Link>
           </div>
         </div>
+
+        {/* Image from Public Folder */}
         <div className="mt-8 md:mt-0 md:w-1/2">
-          {/* Placeholder for image */}
-          <div className="bg-gray-300 w-full h-80 md:h-96 rounded-md flex items-center justify-center">
-            <span className="text-gray-600 text-xl">Image Placeholder</span>
-          </div>
+          <img 
+            src="/home.webp" 
+            alt="Job Search Hero" 
+            className="w-full h-80 md:h-96 rounded-md object-cover" 
+          />
         </div>
       </div>
 
-      
-      
       {/* Job Cards Carousel */}
       <div className="mt-12">
         <JobCarousel />
       </div>
+
       {/* Relationship component */}
       <div className="mt-12">
         <Relationships />

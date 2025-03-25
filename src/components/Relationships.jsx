@@ -29,7 +29,7 @@ const Relationships = () => {
       {/* Left Side Image Placeholder */}
       <div className="md:w-1/2 flex justify-center">
         <img 
-          src="/path-to-your-image.jpg" 
+          src="modern.webp" 
           alt="Business and Candidate Connection" 
           className="w-full max-w-md md:max-w-lg rounded-lg shadow-lg"
         />
