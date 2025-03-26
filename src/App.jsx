@@ -6,6 +6,7 @@ import JobDetails from "./pages/JobDetails";
 import Login from "./pages/Login";
 import ApplyForm from "./components/Applyform";
 import Register from "./pages/Register";
+import Contact from "./pages/Contact";
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,7 @@ const router = createBrowserRouter([
       { path: "job/:jobId", element: <JobDetails /> }, 
       { path: "job/:jobId/apply", element: <ApplyForm /> }, // Fixed path
       { path: "/login", element: <Login /> },
+      { path: "contact", element: <Contact /> },
       { path: "/register", element: <Register /> },
     ],
   },

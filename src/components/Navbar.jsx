@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaSearch, FaBars, FaTimes } from "react-icons/fa";
+import { FaSearch, FaBars, FaTimes, FaChevronDown } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
     <nav className="bg-white shadow-md p-4 relative">
@@ -17,16 +18,54 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <ul className="hidden md:flex space-x-10">
-          {["Home", "Browse Jobs", "Job Details", "Contact"].map((item, index) => (
-            <li key={index}>
-              <Link
-                to={item === "Home" ? "/" : `/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                className="relative text-gray-700 text-xl font-medium px-4 py-2 hover:text-blue-500 transition-all duration-300 
-                after:block after:content-[''] after:absolute after:w-full after:h-1 after:bg-blue-500 
-                after:scale-x-0 after:origin-left hover:after:scale-x-100 after:transition-transform after:duration-300"
-              >
-                {item}
-              </Link>
+          {[
+            { name: "Home", path: "/" },
+            { name: "Browse Jobs", path: "/browse-jobs" },
+            
+            { name: "Contact", path: "/contact" }
+          ].map((item, index) => (
+            <li key={index} className="relative">
+              {item.name === "Job Details" ? (
+                <button
+                  className="relative text-gray-700 text-xl font-medium px-4 py-2 flex items-center space-x-2 hover:text-blue-500 transition-all duration-300"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
+                  <span>Job Details</span>
+                  <FaChevronDown className={`transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""}`} />
+                </button>
+              ) : (
+                <Link
+                  to={item.path}
+                  className="relative text-gray-700 text-xl font-medium px-4 py-2 hover:text-blue-500 transition-all duration-300"
+                >
+                  {item.name}
+                </Link>
+              )}
+
+              {/* Dropdown Content */}
+              <AnimatePresence>
+                {isDropdownOpen && item.name === "Job Details" && (
+                  <motion.ul
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute left-0 mt-2 bg-white shadow-md rounded-md w-48"
+                  >
+                    {["Software Engineer", "Data Analyst", "Product Manager"].map((job, idx) => (
+                      <li key={idx}>
+                        <Link
+                          to={`/job-details/${job.toLowerCase().replace(/\s+/g, "-")}`}
+                          className="block px-4 py-2 text-gray-700 hover:bg-blue-500 hover:text-white transition-all duration-300"
+                          onClick={() => setIsDropdownOpen(false)}
+                        >
+                          {job}
+                        </Link>
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
             </li>
           ))}
         </ul>
@@ -62,24 +101,62 @@ const Navbar = () => {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="md:hidden absolute top-16 left-0 w-full bg-white shadow-md p-6 flex flex-col items-center space-y-6"
           >
-            {["Home", "Browse Jobs", "Job Details", "Contact"].map((item, index) => (
-              <Link
-                key={index}
-                to={item === "Home" ? "/" : `/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                className="text-gray-700 text-xl font-medium py-2 hover:text-blue-500"
-                onClick={() => setIsOpen(false)}
-              >
-                {item}
-              </Link>
+            {[
+              { name: "Home", path: "/" },
+              { name: "Browse Jobs", path: "/browse-jobs" },
+              { name: "Job Details", path: "#" },
+              { name: "Contact", path: "/contact" }
+            ].map((item, index) => (
+              <div key={index} className="relative w-full text-center">
+                {item.name === "Job Details" ? (
+                  <button
+                    className="text-gray-700 text-xl font-medium py-2 flex items-center justify-center space-x-2 hover:text-blue-500 transition-all duration-300"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  >
+                    <span>Job Details</span>
+                    <FaChevronDown className={`transition-transform duration-300 ${isDropdownOpen ? "rotate-180" : ""}`} />
+                  </button>
+                ) : (
+                  <Link
+                    to={item.path}
+                    className="text-gray-700 text-xl font-medium py-2 hover:text-blue-500"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                )}
+
+                {/* Mobile Dropdown Content */}
+                <AnimatePresence>
+                  {isDropdownOpen && item.name === "Job Details" && (
+                    <motion.ul
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.3 }}
+                      className="bg-white shadow-md rounded-md mt-2"
+                    >
+                      {["Software Engineer", "Data Analyst", "Product Manager"].map((job, idx) => (
+                        <li key={idx}>
+                          <Link
+                            to={`/job-details/${job.toLowerCase().replace(/\s+/g, "-")}`}
+                            className="block px-4 py-2 text-gray-700 hover:bg-blue-500 hover:text-white transition-all duration-300"
+                            onClick={() => { setIsDropdownOpen(false); setIsOpen(false); }}
+                          >
+                            {job}
+                          </Link>
+                        </li>
+                      ))}
+                    </motion.ul>
+                  )}
+                </AnimatePresence>
+              </div>
             ))}
+
             {/* Login Button (Mobile) */}
             <Link
               to="/login"
-              className="relative text-white text-xl font-semibold px-8 py-3 rounded-md shadow-md 
-            bg-blue-500 overflow-hidden transition-all duration-500 
-            before:absolute before:inset-0 before:bg-green-400 before:scale-x-0 before:origin-left 
-            hover:before:scale-x-100 before:transition-transform before:duration-500 
-            flex items-center justify-center"
+              className="text-white text-xl font-semibold px-8 py-3 rounded-md shadow-md bg-blue-500"
               onClick={() => setIsOpen(false)}
             >
               Login
