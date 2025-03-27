@@ -51,4 +51,4 @@ GitHub Repo: [https://github.com/felix-atoma/job-board.git]
 
 Flutterflow Design: [https://app.flutterflow.io/project/felixapp-8g24gr]
 
-Live Demo: [https://jbboard.netlify.app/]
+Live Demo: [https://job-board-git-main-felix-atomas-projects.vercel.app/]
