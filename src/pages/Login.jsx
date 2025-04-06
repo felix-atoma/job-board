@@ -1,17 +1,28 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import API from "../../api/axiosInstance";
 
 const Login = () => {
-  const [formData, setFormData] = useState({ username: "", password: "", rememberMe: false });
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
+    setCredentials((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Logging in with:", formData);
+    try {
+      const response = await API.post("/auth/login", credentials);
+      localStorage.setItem("token", response.data.token);
+      setMessage("Login successful!");
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Login failed. Please try again.");
+    }
   };
 
   return (
@@ -23,7 +34,7 @@ const Login = () => {
             <span className="text-blue-600 font-semibold">Home</span> / Login
           </div>
 
-          {/* Contact Us Title - Bigger Size */}
+          {/* Login Title - Bigger Size */}
           <h2 className="text-7xl font-extrabold text-gray-900 mt-2 relative inline-block">
             Login
             <span className="absolute left-0 -bottom-2 w-24 h-1 bg-blue-600"></span>
@@ -31,22 +42,38 @@ const Login = () => {
         </div>
       </section>
 
-      <div className="flex items-center justify-center min-h-screen ">
+      <div className="flex items-center justify-center min-h-screen">
         <div className="bg-white p-8 shadow-lg rounded-lg w-96">
           <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
-          <p className="text-gray-600 text-center mb-6">Enter your details to access your account</p>
+          <p className="text-gray-600 text-center mb-6">
+            Enter your details to access your account
+          </p>
+
+          {message && (
+            <div
+              className={`text-center mb-4 p-2 rounded ${
+                message.includes("successful")
+                  ? "text-green-600 bg-green-100"
+                  : "text-red-600 bg-red-100"
+              }`}
+            >
+              {message}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700">Username or Email Address</label>
+              <label className="block text-gray-700">Email Address</label>
               <input
-                type="text"
-                name="username"
-                placeholder="Username / Email address"
+                type="email"
+                name="email"
+                placeholder="Enter your email"
                 className="w-full p-2 border rounded mt-1"
                 onChange={handleChange}
                 required
               />
             </div>
+
             <div className="mb-4">
               <label className="block text-gray-700">Password</label>
               <input
@@ -58,6 +85,7 @@ const Login = () => {
                 required
               />
             </div>
+
             <div className="flex items-center justify-between mb-4">
               <label className="flex items-center text-gray-700">
                 <input
@@ -68,8 +96,11 @@ const Login = () => {
                 />
                 Keep me logged in
               </label>
-              <Link to="/forgot-password" className="text-blue-500 hover:underline">Forgot Password?</Link>
+              <Link to="/forgot-password" className="text-blue-500 hover:underline">
+                Forgot Password?
+              </Link>
             </div>
+
             <button
               type="submit"
               className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
@@ -77,8 +108,12 @@ const Login = () => {
               Login
             </button>
           </form>
+
           <p className="text-center mt-4">
-            Don’t have an account? <Link to="/register" className="text-blue-500 hover:underline">Sign Up here</Link>
+            Don’t have an account?{" "}
+            <Link to="/register" className="text-blue-500 hover:underline">
+              Sign Up here
+            </Link>
           </p>
         </div>
       </div>

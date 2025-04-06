@@ -77,6 +77,7 @@ const jobs = [
     description: "Drive sales and build strong customer relationships.",
   },
 ];
+
 const JobCarousel = () => {
   const navigate = useNavigate();
 
@@ -105,10 +106,10 @@ const JobCarousel = () => {
       >
         {jobs.map((job) => (
           <SwiperSlide key={job.id} className="p-4">
-            <div className="bg-white shadow-lg rounded-lg p-6 flex flex-col h-full">
-              <div className="flex-grow">
-                <FaBriefcase className="text-4xl text-blue-500 mx-auto mb-4" />
-                <h4 className="text-2xl font-semibold text-gray-800">{job.title}</h4>
+            <div className="bg-white shadow-md rounded-lg p-6 h-[400px] flex flex-col justify-between">
+              <div className="flex-grow flex flex-col items-center text-center">
+                <FaBriefcase className="text-4xl text-blue-500 mb-4" />
+                <h4 className="text-xl font-semibold text-gray-800">{job.title}</h4>
                 <p className="text-gray-600">{job.location}</p>
                 <span
                   className={`inline-block mt-2 px-3 py-1 rounded-full text-white text-sm ${
@@ -116,16 +117,20 @@ const JobCarousel = () => {
                       ? "bg-green-500"
                       : job.type === "Contract"
                       ? "bg-orange-500"
+                      : job.type === "Part-time"
+                      ? "bg-yellow-500"
                       : "bg-gray-500"
                   }`}
                 >
                   {job.type}
                 </span>
-                <p className="text-gray-600 mt-3">{job.description}</p>
+                <p className="text-gray-600 mt-3 text-sm overflow-hidden line-clamp-3">
+                  {job.description}
+                </p>
               </div>
               <button
                 onClick={() => navigate(`/job/${job.id}`, { state: job })}
-                className="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition-all"
+                className="mt-4 px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-all"
               >
                 Apply Now
               </button>
