@@ -8,7 +8,7 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <nav className="bg-white shadow-md p-4 relative">
+    <nav className="bg-white shadow-md p-4 relative z-50">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo with Search Icon */}
         <Link to="/" className="flex items-center space-x-3 text-3xl font-bold text-blue-600">
@@ -21,8 +21,7 @@ const Navbar = () => {
           {[
             { name: "Home", path: "/" },
             { name: "Browse Jobs", path: "/browse-jobs" },
-            
-            { name: "Contact", path: "/contact" }
+            { name: "Contact", path: "/contact" },
           ].map((item, index) => (
             <li key={index} className="relative">
               {item.name === "Job Details" ? (
@@ -36,7 +35,9 @@ const Navbar = () => {
               ) : (
                 <Link
                   to={item.path}
-                  className="relative text-gray-700 text-xl font-medium px-4 py-2 hover:text-blue-500 transition-all duration-300"
+                  className="relative text-gray-700 text-xl font-medium px-4 py-2 hover:text-blue-600 transition-all duration-300
+                    after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[4px]
+                    after:bg-blue-600 after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition-transform after:duration-300"
                 >
                   {item.name}
                 </Link>

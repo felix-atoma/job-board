@@ -40,7 +40,7 @@ const Home = () => {
         {/* Image from Public Folder */}
         <div className="mt-8 md:mt-0 md:w-1/2">
           <img 
-            src="/home.webp" 
+            src="/hero.png" 
             alt="Job Search Hero" 
             className="w-full h-80 md:h-96 rounded-md object-cover" 
           />
